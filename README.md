@@ -22,5 +22,7 @@ To launch Docker, you can use the Docker Compose command. A multi-stage Dockerfi
 Please use CLion or VSCode IDE for development. The current development operating system is Ubuntu 24. CMake is the default build tool, although Ninja can be re-enabled in CLion if preferred. Additionally, Bazel can be used if a Node.js server simulator is required.
 
 ```
+  apt-get install cmake
+  apt-get install -y libboost-all-dev libssl-dev
   make build-local
 ```
