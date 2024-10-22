@@ -24,7 +24,6 @@
 #include <memory>
 #include <string>
 #include <boost/json.hpp>
-
 #include "../utils/my_logger.hpp"
 
 namespace beast = boost::beast;         // from <boost/beast.hpp>
@@ -34,9 +33,7 @@ namespace net = boost::asio;            // from <boost/asio.hpp>
 namespace ssl = boost::asio::ssl;       // from <boost/asio/ssl.hpp>
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
-//#define DEF_TARGET "/foo"
 #define DEF_PATH "/v1/stream"
-
 
 std::string getTargetPath(const char* base, const char* token)
 {
@@ -44,8 +41,6 @@ std::string getTargetPath(const char* base, const char* token)
     ss << base << "/?token=" << token;
     return ss.str();
 }
-
-
 
 namespace mo {
     // Sends a WebSocket message and prints the response
@@ -73,7 +68,6 @@ namespace mo {
         void setEventHandler(std::shared_ptr<IEventHandler> event_handler) {
             event_handler_ = event_handler;
         }
-
 
         // Start the asynchronous operation
         void
@@ -216,14 +210,6 @@ namespace mo {
                     beast::bind_front_handler(
                             &session::on_read,
                             shared_from_this()));
-            /*
-            // Send the message
-            ws_.async_write(
-                net::buffer(text_),
-                beast::bind_front_handler(
-                    &session::on_write,
-                    shared_from_this()));
-            */
         }
 
         void
@@ -324,7 +310,7 @@ namespace mo {
 bool boost_mo_ws_client(const char* host, const char* token, std::shared_ptr<IEventHandler> const& event_handler)
 {
     const char port[] = "443";
-    const char text[] = "hello";
+    const char text[] = "bye";
 
     // The io_context is required for all I/O
     net::io_context ioc;
