@@ -1,0 +1,72 @@
+FROM alpine:3.17.0 AS base
+
+WORKDIR /app
+
+RUN apk update \
+  && apk add --no-cache -y \
+        bash \
+        curl \
+        git \
+        python3
+
+#RUN apt-get install -y vim git wget sudo curl
+
+#USER node
+#RUN npm install --global yarn
+
+# Dev build image
+##############################################################################
+FROM base AS build
+USER root
+
+# Install build tools
+RUN apk add --no-cache \
+    boost1.80-program_options=1.80.0-r3 \
+    boost1.80.dev=1.80.0-r3 \
+    build-base=0.5-r3 \
+    cmake=3.24.3-r0 \
+    libstdc++=12.2.1_git20220924-r4 \
+    linux-headers
+
+# Copy sources and configuration
+COPY --chown=demo:demo ../ipc ./src/
+COPY ../CMakeLists.txt .
+
+# Build application
+RUN cmake -DCMAKE_BUILD_TYPE=Release .. \
+  && cmake --build . --parallel 8
+COPY ../entrypoint.sh ./app/entrypoint.sh
+RUN chmod +x entrypoint.sh
+
+# Create final production Image
+##############################################################################
+FROM base AS production
+USER root
+
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+
+# Create runtime user
+RUN addgroup -S demo -g ${GROUP_ID} \
+  && adduser -S demo -u ${USER_ID} demo \
+  && mkdir -p /usr/local/bin
+    
+# Copy runtime script
+COPY ./scripts/*.sh .
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    boost1.80-program_options=1.80.0-r3 \
+    libstdc++=12.2.1_git20220924-r4
+
+# Copy built binary from build image
+COPY --chown=demo:demo --from=build \
+  ./app/build/src/simplehttpserver \
+  ./app/
+
+# Define entrypoint  
+ENTRYPOINT ["/app/entrypoint.sh"]
+EXPOSE 8000
+
+CMD ["myapp", "--enable-fips", "server"]
+# CMD ["/bin/sh"]

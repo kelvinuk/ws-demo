@@ -1,0 +1,17 @@
+services:
+  ws-docker:
+    build:
+      dockerfile: docker/devtools.Dockerfile
+      target: production
+    container_name: ws-docker
+    command: /app/ws_demo
+    #tail -f /dev/null
+    platform: linux/amd64
+    volumes:
+      - ./:/usr/local/src/app
+    #env_file:
+    #  - .env.development.local
+    #ports:
+    #  - "8126:8126"
+volumes:
+  cache:
