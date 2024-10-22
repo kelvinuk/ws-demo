@@ -1,31 +1,25 @@
 # Boost Websocket C++ Client 
 
-A small program that demonstrate how to call Molly API from C++.
+A small program that demonstrates how to call Molly API from C++.
 
 
 ## Structure and Design
 
-This program provides two major functions (boost_https_login and boost_mo_ws_client) 
-The boost_https_login function implements the SSL HTTP post request whereas
-The boost_mo_ws_client function implements the SSL Websocket client connection.
-They both use Asio asynchronis mode. This approach is targeted for C++ coroutine, non-blocking environmnt where software scalbility/flexibility is important.
-Compare with traditional multithread programming, locking /semaphore resources are not needed.
+This program features two main functions: boost_https_login and boost_mo_ws_client. The boost_https_login function handles SSL HTTP POST requests, while the boost_mo_ws_client function establishes an SSL WebSocket client connection. Both functions utilize Asio's asynchronous mode, which is designed for C++ coroutines in a non-blocking environment where software scalability and flexibility are essential. Unlike traditional multithreading programming, this approach eliminates the need for locking and semaphore resources.
 
-
-An Event Handler is introduced and it can be passed to these functions for future customization / enhancement. 
+An Event Handler has been introduced, which can be passed to these functions for future customization and enhancement.
 
 
 ## Demo Quick start
 
-To spin up docker, docker compose command can be used. Multi stage Docker file is provided.
+To launch Docker, you can use the Docker Compose command. A multi-stage Dockerfile is provided for this purpose.
 ```
   make start-all
 ```
 
 ## Development Quick start
 
-Please use CLion or VsCode IDE for development. Current development OS is ubuntu 24.
-CMake is the default build tool (Ninja can be re-enabled in IDE if CLion is used). (Bazel can be used if node js server simulator is needed) 
+Please use CLion or VSCode IDE for development. The current development operating system is Ubuntu 24. CMake is the default build tool, although Ninja can be re-enabled in CLion if preferred. Additionally, Bazel can be used if a Node.js server simulator is required.
 
 ```
   make build-local
