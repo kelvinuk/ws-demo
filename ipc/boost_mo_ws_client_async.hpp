@@ -1,6 +1,3 @@
-//
-// Created by owner on 10/17/24.
-//
 
 #ifndef WS_DEMO_BOOST_MO_WEBSOCKET_CLIENT_ASYNC_HPP
 #define WS_DEMO_BOOST_MO_WEBSOCKET_CLIENT_ASYNC_HPP
